@@ -89,8 +89,6 @@
       currentVal = $textarea.val();
     }, 100);
 
-    console.log(self.pluralLabel(10, 'character'));
-
     // Add the word and characters count after the textarea wrapper
     $wrapper.after($wordCount).after($charCount);
 
