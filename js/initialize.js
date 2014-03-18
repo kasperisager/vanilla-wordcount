@@ -2,8 +2,7 @@
   'use strict';
 
   $(function () {
-    var definitions   = $.parseJSON(gdn.definition('WordCount'))
-      , maxCharacters = definitions.max;
+    var definitions = $.parseJSON(gdn.definition('WordCount'));
 
     var options = {
       textarea : '.TextBox'
@@ -15,16 +14,16 @@
       }
     , counters : [{
         labels  : {
-          singular : 'character left'
-        , plural   : 'characters left'
+          singular : definitions.labels.character
+        , plural   : definitions.labels.characters
         }
       , counter : function (string) {
-          return (maxCharacters - (string || '').length);
+          return (definitions.max - (string || '').length);
         }
       }, {
         labels  : {
-          singular : 'word'
-        , plural   : 'words'
+          singular : definitions.labels.word
+        , plural   : definitions.labels.words
         }
       , counter : function (string) {
           string = $(string).text();
@@ -33,8 +32,6 @@
         }
       }]
     };
-
-    $.extend(true, options, definitions);
 
     var attachTriggers = [
       'ready'
