@@ -5,13 +5,6 @@
     this.options = {
       textarea : '.js-text-box'
     , wrapper  : '.js-text-box-wrapper'
-    , max      : 8000
-    , labels   : {
-        character  : 'character left'
-      , characters : 'characters left'
-      , word       : 'word'
-      , words      : 'words'
-      }
     , classes  : {
         wrap  : 'badge-wrap'
       , badge : 'badge'
@@ -20,57 +13,43 @@
     };
 
     if (options) {
+      options.counters = options.counters || [];
+
       $.extend(true, this.options, options);
     }
   };
 
-  WordCount.prototype.countCharacters = function (string) {
-    return (string || '').length;
-  };
+  WordCount.prototype.buildCounter = function ($textarea, options) {
+    var classes  = this.options.classes
+      , labels   = options.labels
+        // Build the counter element
+      , $counter = $('<p>').addClass(classes.wrap);
 
-  WordCount.prototype.countWords = function (string) {
-    return (string !== '') ? (string || '').trim().split(' ').length : 0;
-  };
+    // Construct the counter badge and label
+    $counter.$badge = $('<span>').addClass(classes.badge);
+    $counter.$label = $('<span>').addClass(classes.label);
 
-  WordCount.prototype.pluralLabel = function (number, singular) {
-    return (this.options.labels[singular + ((parseInt(number) === 1) ? '' : 's')]);
+    // Add the badge and label to the counter
+    $counter.html($counter.$badge.add($counter.$label));
+
+    $textarea.on('input', function () {
+      // Calculate the count from the passed function
+      var count = options.counter($textarea.val());
+
+      // Update the counter badge
+      $counter.$badge.text(count);
+
+      // Update the counter label. If the count equals 1, use the singular
+      // labels. Otherwise, use the plural label
+      $counter.$label.text(labels[(count === 1) ? 'singular' : 'plural' ]);
+    }).trigger('input');
+
+    return $counter;
   };
 
   WordCount.prototype.attachCounters = function ($textarea, $wrapper) {
     // Bail out if counters are already attached
     if ($textarea.data('counters')) return;
-
-    var self       = this
-      , options    = self.options
-      , $wrap      = $('<p>').addClass(options.classes.wrap)
-      , $badge     = $('<span>').addClass(options.classes.badge)
-      , $label     = $('<span>').addClass(options.classes.label)
-        // Character counter
-      , $charBadge = $badge.clone()
-      , $charLabel = $label.clone()
-      , $charCount = $wrap.clone().html($charBadge.add($charLabel))
-        // Word counter
-      , $wordBadge = $badge.clone()
-      , $wordLabel = $label.clone()
-      , $wordCount = $wrap.clone().html($wordBadge.add($wordLabel));
-
-    var updateHandler = function () {
-      var string    = $textarea.val()
-          // Count number of characters, incl. eventual HTML, Markdown, etc.
-        , charsLeft = (options.max - self.countCharacters(string))
-          // When counting words, we're only interested in the actual text
-        , words     = self.countWords($(string).text());
-
-      // Update word and character counts
-      $charBadge.text(charsLeft);
-      $charLabel.text(self.pluralLabel(charsLeft, 'character'));
-      $wordBadge.text(words);
-      $wordLabel.text(self.pluralLabel(words, 'word'));
-    };
-
-    // Calculate word and character count when stuff is typed into the
-    // textarea
-    $textarea.on('input', updateHandler).trigger('input');
 
     var currentVal = $textarea.val();
 
@@ -83,6 +62,7 @@
         return;
       }
 
+      // Simulate onInput
       $textarea.trigger('input');
 
       // Set a new value to test against 100ms from now
@@ -90,7 +70,9 @@
     }, 100);
 
     // Add the word and characters count after the textarea wrapper
-    $wrapper.after($wordCount).after($charCount);
+    for (var i = this.options.counters.length - 1; i >= 0; i--) {
+      $wrapper.after(this.buildCounter($textarea, this.options.counters[i]));
+    }
 
     // Remember that we've attached counters to this textarea
     $textarea.data('counters', true);
