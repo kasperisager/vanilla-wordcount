@@ -26,9 +26,7 @@
         , plural   : definitions.labels.words
         }
       , counter : function (string) {
-          string = $(string).text();
-
-          return (string !== '') ? (string || '').trim().split(' ').length : 0;
+          return (string !== '') ? $.trim(string || '').split(' ').length : 0;
         }
       }]
     };
