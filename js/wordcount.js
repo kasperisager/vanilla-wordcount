@@ -20,6 +20,9 @@
   };
 
   WordCount.prototype.buildCounter = function ($textarea, options) {
+    // Bail out if the textarea doesn't exist
+    if (!$textarea.length) return;
+
     var classes  = this.options.classes
       , labels   = options.labels
         // Build the counter element
