@@ -3,7 +3,7 @@
 $PluginInfo['wordcount'] = array(
     'Name'        => "Word Count",
     'Description' => "Word Count provides you with accurate word and character counts when composing discussions and comments",
-    'Version'     => '2.0.1',
+    'Version'     => '2.0.2',
     'PluginUrl'   => 'https://github.com/kasperisager/vanilla-wordcount',
     'Author'      => "Kasper Kronborg Isager",
     'AuthorEmail' => 'kasperisager@gmail.com',
