@@ -17,16 +17,16 @@
           singular : definitions.labels.character
         , plural   : definitions.labels.characters
         }
-      , counter : function (string) {
-          return (definitions.max - (string || '').length);
+      , counter : function (counter) {
+          return (definitions.max - counter.characters);
         }
       }, {
         labels  : {
           singular : definitions.labels.word
         , plural   : definitions.labels.words
         }
-      , counter : function (string) {
-          return (string !== '') ? $.trim(string || '').split(' ').length : 0;
+      , counter : function (counter) {
+          return counter.words;
         }
       }]
     };

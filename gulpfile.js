@@ -2,9 +2,10 @@ var gulp = require('gulp')
   , concat = require('gulp-concat')
   , uglify = require('gulp-uglify');
 
-gulp.task('concat', function () {
+gulp.task('scripts', function () {
   gulp.src([
-    'js/wordcount.js'
+    'bower_components/Countable/Countable.js'
+  , 'js/wordcount.js'
   , 'js/initialize.js'
   ])
     .pipe(uglify())

@@ -36,15 +36,17 @@
     $counter.html($counter.$badge.add($counter.$label));
 
     $textarea.on('input', function () {
-      // Calculate the count from the passed function
-      var count = options.counter($textarea.val());
+      Countable.once($textarea[0], function (counter) {
+        // Calculate the count from the passed function
+        var count = options.counter(counter);
 
-      // Update the counter badge
-      $counter.$badge.text(count);
+        // Update the counter badge
+        $counter.$badge.text(count);
 
-      // Update the counter label. If the count equals 1, use the singular
-      // labels. Otherwise, use the plural label
-      $counter.$label.text(labels[(count === 1) ? 'singular' : 'plural' ]);
+        // Update the counter label. If the count equals 1, use the singular
+        // labels. Otherwise, use the plural label
+        $counter.$label.text(labels[(count === 1) ? 'singular' : 'plural' ]);
+      });
     }).trigger('input');
 
     return $counter;

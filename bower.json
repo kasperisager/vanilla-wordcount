@@ -1,0 +1,8 @@
+{
+  "name": "vanilla-wordcount",
+  "private": true,
+  "devDependencies": {},
+  "dependencies": {
+    "Countable": "2.0.2"
+  }
+}
