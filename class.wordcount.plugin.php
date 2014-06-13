@@ -48,7 +48,7 @@ class WordCountPlugin extends Gdn_Plugin
         $controller->addDefinition('WordCount', json_encode($definitions));
 
         // Add required assets
-        $controller->addJsFile('wordcount.min.js', 'plugins/wordcount');
-        $controller->addCssFile('wordcount.css', 'plugins/wordcount');
+        $controller->addJsFile($this->getResource('js/wordcount.min.js', false, false));
+        $controller->addCssFile($this->getResource('design/wordcount.css', false, false));
     }
 }
