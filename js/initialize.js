@@ -18,7 +18,7 @@
         , plural   : definitions.labels.characters
         }
       , counter : function (counter) {
-          return (definitions.max - counter.characters);
+          return (definitions.max - counter.all);
         }
       }, {
         labels  : {
